@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\dotnet-rpg.domain\dotnet-rpg.domain.csproj" />
   </ItemGroup>
 
 </Project>
