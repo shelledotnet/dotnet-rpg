@@ -21,7 +21,7 @@ namespace dotnet_rpg.domain.Models
         public int Intelligence { get; set; }
 
 
-        public string Class { get; set; }
+        public string? Class { get; set; }
     }
 
 }

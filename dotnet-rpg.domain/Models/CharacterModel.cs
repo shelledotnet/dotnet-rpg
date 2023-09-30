@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace dotnet_rpg.domain.Models
     {
         [Required(ErrorMessage ="{0} required")]
         [Range(1,20,ErrorMessage ="{0} allowed values are from 1 to 20")]
+        [DefaultValue(1)]
         public int Id { get; set; }
     }
 }

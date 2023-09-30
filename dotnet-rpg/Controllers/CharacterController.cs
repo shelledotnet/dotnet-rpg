@@ -27,9 +27,10 @@ namespace dotnet_rpg.Controllers
             _logger = logger;   
         }
 
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ServiceResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ServiceFailedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponse<List<GetCharacterDto>>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ServiceBadResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ServiceFailedResponse))]
         [HttpGet("GetAll")]
         public async Task<IActionResult> Get()
         {
@@ -41,20 +42,24 @@ namespace dotnet_rpg.Controllers
             {
                 _logger.LogInformation("info");
                 ServiceResponse<List<GetCharacterDto>> genericResponse =await _characterService.GetAllCharacter();
-                return genericResponse.Success == true ? Ok(genericResponse) : NotFound(new ServiceResponse { Success = genericResponse.Success, Message = genericResponse.Message});
-          
+                return genericResponse.Success == true ? Ok(genericResponse)
+                                                       : NotFound(_mapper.Map<ServiceFailedResponse>(genericResponse));
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                _logger.LogError($"{ex}");
+                ServiceFailedResponse serviceResponse = new() { Success = false, Message = ex.InnerException?.Message != null ? ex.InnerException.Message : ex.Message };
+                return StatusCode(500, serviceResponse);
             }
         }
 
 
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ServiceResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ServiceFailedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponse<GetCharacterDto>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest ,Type = typeof(ServiceBadResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ServiceFailedResponse))]
         [HttpGet("GetSingle",Name = "GetSingle")]
         public async Task<IActionResult> GetSingle([FromQuery]CharacterModel characterModel)
         {
@@ -66,19 +71,23 @@ namespace dotnet_rpg.Controllers
             {
                 _logger.LogInformation("info");
                 ServiceResponse<GetCharacterDto> genericResponse =await _characterService.GetCharacterById(characterModel.Id);
-                return genericResponse.Success == true ? Ok(genericResponse) : NotFound(new ServiceResponse { Success = genericResponse.Success, Message = genericResponse.Message });
+                return genericResponse.Success == true ? Ok(genericResponse)
+                                                       : NotFound(_mapper.Map<ServiceFailedResponse>(genericResponse));
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                _logger.LogError($"{ex}");
+                ServiceFailedResponse serviceResponse = new() { Success = false, Message = ex.InnerException?.Message != null ? ex.InnerException.Message : ex.Message };
+                return StatusCode(500, serviceResponse);
             }
         }
 
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ServiceBadResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ServiceFailedResponse))]
         [HttpPost]
         public async Task<IActionResult>  AddCharacter([FromBody] AddCharacterDto addcharacter)
         {
@@ -93,15 +102,81 @@ namespace dotnet_rpg.Controllers
             {
                 _logger.LogInformation("info");
                 ServiceResponse<GetCharacterDto> genericResponse =await _characterService.AddCharacter(addcharacter);
-                return genericResponse.Success == true ? CreatedAtRoute(nameof(GetSingle), new { id = genericResponse.Data?.Id }, genericResponse) : BadRequest(new ServiceResponse { Success = genericResponse.Success, Message = genericResponse.Message });
-
+                return genericResponse.Success == true ? CreatedAtRoute(nameof(GetSingle), new { id = genericResponse.Data?.Id }, genericResponse) 
+                                                       : BadRequest(_mapper.Map<ServiceFailedResponse>(genericResponse));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                _logger.LogError($"{ex}");
+                ServiceFailedResponse serviceResponse = new() { Success = false, Message = ex.InnerException?.Message != null ? ex.InnerException.Message : ex.Message };
+                return StatusCode(500, serviceResponse);
             }
         }
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ServiceFailedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponse<GetCharacterDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ServiceBadResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ServiceFailedResponse))]
+        [HttpPut]
+        public async Task<IActionResult> UpdateCharacter([FromBody] UpdateCharacterDto updatecharacter)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.GetApiResponse());
+            }
+
+
+            try
+            {
+                _logger.LogInformation("info");
+                ServiceResponse<GetCharacterDto> genericResponse = await _characterService.UpdateCharacterById(updatecharacter);
+                return genericResponse.Success == true ? Ok(genericResponse)
+                                                       : NotFound(_mapper.Map<ServiceFailedResponse>(genericResponse));
+
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError($"{ex}");
+                ServiceFailedResponse serviceResponse = new() { Success = false, Message = ex.InnerException?.Message != null ? ex.InnerException.Message : ex.Message };
+                return StatusCode(500, serviceResponse);
+            }
+        }
+
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ServiceFailedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponse<GetCharacterDto>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ServiceBadResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ServiceFailedResponse))]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCharacter([FromQuery] DeleteCharacterDto deleteCharacterDto)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.GetApiResponse());
+            }
+
+
+            try
+            {
+                _logger.LogInformation("info");
+                ServiceResponse<GetCharacterDto> genericResponse = await _characterService.DeleteCharacter(deleteCharacterDto.Id);
+                return genericResponse.Success == true ? Ok(genericResponse)
+                                                       : NotFound(_mapper.Map<ServiceFailedResponse>(genericResponse));
+
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError($"{ex}");
+                ServiceFailedResponse serviceResponse = new() { Success = false, Message = ex.InnerException?.Message != null ? ex.InnerException.Message : ex.Message };
+                return StatusCode(500, serviceResponse);
+            }
+        }
+
+
+
     }
     #else
     #endif

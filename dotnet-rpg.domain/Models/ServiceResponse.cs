@@ -30,5 +30,12 @@ namespace dotnet_rpg.domain.Models
 
         public List<string>? Message { get; set; } 
     }
+    public class ServiceFailedResponse
+    {
 
+
+        public bool Success { get; set; } = false;
+
+        public string? Message { get; set; }
+    }
 }
