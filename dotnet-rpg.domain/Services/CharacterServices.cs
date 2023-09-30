@@ -61,9 +61,6 @@ namespace dotnet_rpg.domain.Services
 
 
                 }
-                return response;
-
-
 
             }
             catch (Exception ex)
@@ -72,8 +69,8 @@ namespace dotnet_rpg.domain.Services
                 _logger.LogError(message);
                 response.Success = false;
                 response.Message = ex.InnerException?.Message != null ? ex.InnerException.Message : ex.Message;
-                return response;
             }
+            return response;
         }
 
         public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacter()
@@ -100,7 +97,6 @@ namespace dotnet_rpg.domain.Services
 
 
                 }
-                return response;
             }
             catch (Exception ex)
             {
@@ -108,8 +104,8 @@ namespace dotnet_rpg.domain.Services
                 _logger.LogError(message);
                 response.Success = false;
                 response.Message = ex.InnerException?.Message != null ? ex.InnerException.Message : ex.Message;
-                return response;
             }
+            return response;
         }
 
         public async Task<ServiceResponse<GetCharacterDto>> GetCharacterById(int Id)
@@ -137,7 +133,6 @@ namespace dotnet_rpg.domain.Services
                     response.Success = false;
                     response.Message = $"character with id number {Id} doesn't exist";
                 }
-                return response;
             }
             catch (Exception ex)
             {
@@ -145,8 +140,8 @@ namespace dotnet_rpg.domain.Services
                 _logger.LogError(message);
                 response.Success = false;
                 response.Message = ex.InnerException?.Message != null ? ex.InnerException.Message : ex.Message;
-                return response;
             }
+            return response;
         }
 
         public async Task<ServiceResponse<GetCharacterDto>> UpdateCharacterById(UpdateCharacterDto updateCharacterDto)
@@ -189,7 +184,7 @@ namespace dotnet_rpg.domain.Services
                     response.Message = "success";
                 }
 
-                return response;
+               
 
 
 
@@ -201,8 +196,10 @@ namespace dotnet_rpg.domain.Services
                 _logger.LogError(message);
                 response.Success = false;
                 response.Message = ex.InnerException?.Message != null ? ex.InnerException.Message : ex.Message;
-                return response;
+                
             }
+
+            return response;
         }
 
         public async Task<ServiceResponse<GetCharacterDto>> DeleteCharacter(int Id)
@@ -227,10 +224,10 @@ namespace dotnet_rpg.domain.Services
 
                     response.Data = _mapper.Map<GetCharacterDto>(character);
                     response.Success = true;
-                    response.Message = $"character with an id {Id} deleted successfully";
+                    response.Message = $"character with an id {Id} was deleted successfully";
                 }
 
-                return response;
+                
 
 
 
@@ -242,8 +239,10 @@ namespace dotnet_rpg.domain.Services
                 _logger.LogError(message);
                 response.Success = false;
                 response.Message = ex.InnerException?.Message != null ? ex.InnerException.Message : ex.Message;
-                return response;
+                
             }
+
+            return response;
         }
     }
 }
