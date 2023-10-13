@@ -12,6 +12,7 @@ namespace dotnet_rpg.Profiles
             #endregion  YouVerifyV2CacModel
             CreateMap<Character, GetCharacterDto>();
             CreateMap<AddCharacterDto, Character>();
+            CreateMap<ServiceResponse<List<GetCharacterDto>>, ServiceFailedResponse>();
             CreateMap<ServiceResponse<GetCharacterDto>, ServiceFailedResponse>();
             CreateMap<int?, int>().ConvertUsing((src, dest) => src ?? dest);
             CreateMap<UpdateCharacterDto, Character>()

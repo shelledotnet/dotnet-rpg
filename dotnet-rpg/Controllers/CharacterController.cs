@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using dotnet_rpg.AttributeUsed;
 using dotnet_rpg.domain.Dtos;
-using dotnet_rpg.domain.Models;
 using dotnet_rpg.domain.Services;
 using dotnet_rpg.Extensions;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnet_rpg.Controllers
@@ -12,8 +12,10 @@ namespace dotnet_rpg.Controllers
     [Consumes("application/json")]
     [Route("api/character/")]
     [ApiController]
-
-    #if DEBUG
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ServiceFailedResponse))]
+    [TypeFilter(typeof(ApiKeyAttribute))]
+   //[Authorize]  is apply globally at the IOC container
+#if DEBUG
     public class CharacterController : ControllerBase
     {
         
@@ -85,7 +87,7 @@ namespace dotnet_rpg.Controllers
         }
 
 
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ServiceResponse<GetCharacterDto>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ServiceBadResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ServiceFailedResponse))]
         [HttpPost]

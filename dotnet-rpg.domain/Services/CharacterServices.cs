@@ -34,6 +34,7 @@ namespace dotnet_rpg.domain.Services
         public async Task<ServiceResponse<GetCharacterDto>> AddCharacter(AddCharacterDto addcharacter)
         {
             ServiceResponse<GetCharacterDto> response = new();
+            GetCharacterDto getCharacterDto = new();
             try
             {
                 
@@ -44,7 +45,7 @@ namespace dotnet_rpg.domain.Services
                 Character character = _mapper.Map<Character>(addcharacter);
                 character.Id = characters.Max(c => c.Id)+ 1;
                 characters.Add(character);
-                GetCharacterDto getCharacterDto = _mapper.Map<GetCharacterDto>(character);
+                getCharacterDto = _mapper.Map<GetCharacterDto>(character);
                 if (character is not null)
                 {
 
@@ -80,9 +81,10 @@ namespace dotnet_rpg.domain.Services
             try
             {
                 _logger.LogInformation("info");
-                getCharacter = _mapper.Map<List<GetCharacterDto>>(characters);
                 if (characters.Count > 0)
                 {
+                    getCharacter = _mapper.Map<List<GetCharacterDto>>(characters);
+
 
                     response.Data = getCharacter;
                     response.Success = true;
