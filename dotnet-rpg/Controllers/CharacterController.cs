@@ -14,7 +14,7 @@ namespace dotnet_rpg.Controllers
     [ApiController]
     [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ServiceFailedResponse))]
     [TypeFilter(typeof(ApiKeyAttribute))]
-   //[Authorize]  is apply globally at the IOC container
+
 #if DEBUG
     public class CharacterController : ControllerBase
     {

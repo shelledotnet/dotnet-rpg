@@ -15,7 +15,7 @@ namespace dotnet_rpg.Extensions
             var request = httpContext.Request;
 
             dynamic reqBody = JsonConvert.DeserializeObject<dynamic>(RequestPayload);
-            if(reqBody?.ContainsKey("bvn"))
+            if(reqBody?.ContainsKey("bvn")==true)
                 reqBody.bvn = "******";
 
             RequestPayload = JsonConvert.SerializeObject(reqBody);

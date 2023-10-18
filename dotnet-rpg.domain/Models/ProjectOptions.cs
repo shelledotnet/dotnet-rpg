@@ -12,6 +12,9 @@ namespace dotnet_rpg.domain.Models
         [Required(AllowEmptyStrings = false)]
         public string? XApiKey { get; set; }
 
+        [Required(AllowEmptyStrings = false)]
+        public string? SecreteKey { get; set; }
+
         #region MyRegion
         //[Required(AllowEmptyStrings = false)]
         //public string? Version { get; set; }

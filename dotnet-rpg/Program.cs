@@ -1,9 +1,11 @@
 global using dotnet_rpg.domain.Models;
+using dotnet_rpg.domain.Data;
 using dotnet_rpg.domain.Services;
 using dotnet_rpg.Extensions;
 using dotnet_rpg.Middlewear;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -57,10 +59,41 @@ try
                          return true;
                      })
                    .ValidateOnStart();
- 
-    
+
+    builder.Services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(builder =>
+         builder.AllowAnyOrigin()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader());
+    });
+    builder.Services.AddDbContextFactory<EmployeeManagerDbContext>(
+    opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("IMSConnection")));
+
+
+
+
+
+
     var app = builder.Build();
-    
+
+#if DEBUG
+    #region This will create the Db and run all pending migrations if not exist
+    await EnsureDatabaseIsMigrated(app.Services);
+    async Task EnsureDatabaseIsMigrated(IServiceProvider services)
+    {
+        using var scope = services.CreateScope();
+        using var ctx = scope.ServiceProvider.GetService<EmployeeManagerDbContext>();
+        if (ctx is not null)
+        {
+            await ctx.Database.MigrateAsync();
+        }
+    }
+    #endregion
+#else
+#endif
+
+
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
@@ -69,6 +102,7 @@ try
     }
     app.UseCorrelationId();
     app.UseHttpsRedirection();
+    app.UseCors();//add this after UserRouting and before UseEndpoints  or UseAuthorization();
     app.UseRequesResponse();
     app.UseSerilogRequestLogging(opts => opts.EnrichDiagnosticContext = LogHelper.EnrichFromRequest);
     app.UseAuthorization();
