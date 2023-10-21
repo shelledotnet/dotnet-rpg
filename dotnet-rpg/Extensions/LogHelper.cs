@@ -33,6 +33,7 @@ namespace dotnet_rpg.Extensions
             {
                 diagnosticContext.Set("ResponseCode", responseBody.Success);
                 diagnosticContext.Set("Description", responseBody.Message);
+                diagnosticContext.Set("ResponseId", responseBody.ResponseId);
             }
 
 
@@ -73,6 +74,7 @@ namespace dotnet_rpg.Extensions
     public class ResponseBody
     {
         public dynamic? Data{ get; set; }
+        public string? ResponseId { get; set; } 
 
         public bool Success { get; set; }
 

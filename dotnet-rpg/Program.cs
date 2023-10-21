@@ -8,7 +8,10 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
+using Swashbuckle.AspNetCore.Filters;
+using System.Net;
 using System.Text;
 
 
@@ -47,7 +50,33 @@ try
         });
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen(c=>c.AddSwaggerApiKeySecurity());
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.AddSwaggerApiKeySecurity();
+        c.AddSwaggerApiKeyAuthorization();
+    });
+    var projectOptions = builder.Configuration.GetSection(nameof(ProjectOptions)).Get<ProjectOptions>();
+    var tokenvalidationParameter = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateIssuerSigningKey = true,
+        ValidateLifetime = true,
+        ValidIssuer = projectOptions.Issuer,
+        ValidAudience = projectOptions.Audience,
+        RequireExpirationTime = true,  //wants the token to expire we can make it false at development time
+        IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(projectOptions.SecreteKey))
+        //ClockSkew = TimeSpan.Zero
+    };
+    builder.Services.AddSingleton(tokenvalidationParameter);//i register this in ioc-container to be able to re-use this anywhere
+
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = tokenvalidationParameter;  //i can pick this any were
+
+
+            });
     builder.Services.AddAutoMapper(typeof(Program).Assembly);
     builder.Services.AddScoped<ICharacterService, CharacterServices>();
     builder.Services.AddOptions<ProjectOptions>()
@@ -105,6 +134,7 @@ try
     app.UseCors();//add this after UserRouting and before UseEndpoints  or UseAuthorization();
     app.UseRequesResponse();
     app.UseSerilogRequestLogging(opts => opts.EnrichDiagnosticContext = LogHelper.EnrichFromRequest);
+    app.UseAuthentication();
     app.UseAuthorization();
 
     app.MapControllers();

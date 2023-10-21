@@ -15,6 +15,14 @@ namespace dotnet_rpg.domain.Models
         [Required(AllowEmptyStrings = false)]
         public string? SecreteKey { get; set; }
 
+        [Required(AllowEmptyStrings = false)]
+        public string? Audience { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        public string? Issuer { get; set; }
+
+
+
         #region MyRegion
         //[Required(AllowEmptyStrings = false)]
         //public string? Version { get; set; }

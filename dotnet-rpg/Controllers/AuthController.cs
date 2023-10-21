@@ -1,6 +1,8 @@
-﻿using dotnet_rpg.domain.Dtos;
+﻿using dotnet_rpg.AttributeUsed;
+using dotnet_rpg.domain.Dtos;
 using dotnet_rpg.domain.Models;
 using dotnet_rpg.Extensions;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -13,6 +15,8 @@ namespace dotnet_rpg.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ServiceFailedResponse))]
+    [TypeFilter(typeof(ApiKeyAttribute))]
     public class AuthController : ControllerBase
     {
 
@@ -23,10 +27,16 @@ namespace dotnet_rpg.Controllers
             _projectOptions=projectOptions.CurrentValue;
         }
 
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponse<User>))]
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register([FromBody] UserDto   userDto)
+        public async Task<IActionResult> Register([FromBody] UserDto   userDto)
         {
+            ServiceResponse<User> response = new ServiceResponse<User>
+            {
+                Data = user,
+                Message = "success",
+                Success = true
+            };
 
             if (!ModelState.IsValid)
             {
@@ -43,28 +53,37 @@ namespace dotnet_rpg.Controllers
             user.PasswordSalt = passwordSalt;
             user.PasswordHash = passwordHash;
 
-            return Ok(user);
+            return Ok(response);
         }
 
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(FailedRequest))]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TokenResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ServiceFailedResponse))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponse<TokenResponse>))]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserDto userDto)
         {
-
+           
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState.GetApiResponse());
             }
             if(user.Username != userDto.Username)
             {
-                return BadRequest(new FailedRequest { Message = "user wasn't found", Status = false });
+                return BadRequest(new ServiceFailedResponse { Message = "user wasn't found", Success=false });
             }
             if(!VerifyPasswordHash(userDto.Password,user.PasswordHash,user.PasswordSalt))
-                return BadRequest(new FailedRequest { Message = "invalid user login details", Status = false });
+                return BadRequest(new ServiceFailedResponse { Message = "invalid user login details", Success = false });
 
-            ;
-            return Ok(new TokenResponse {Token= CreateToken(user),Username=user.Username });
+
+            ServiceResponse<GenToken> response = new ServiceResponse<GenToken>
+            {
+                Data = CreateToken(user),
+                Message = "success",
+                Success = true
+            };
+
+
+
+            return Ok(response);
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
@@ -87,23 +106,40 @@ namespace dotnet_rpg.Controllers
 
         [ApiExplorerSettings(IgnoreApi = true)]
         [NonAction]
-        private string CreateToken(User user)
+        private GenToken CreateToken(User user)
         {
-            List<Claim> claims = new()
+            var tokenHandler = new JwtSecurityTokenHandler();
+           var claims = new ClaimsIdentity(new[] 
             {
                 new Claim(ClaimTypes.Name,user.Username)
 
-            };
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_projectOptions.SecreteKey));
-            var  credential   =  new SigningCredentials(key,SecurityAlgorithms.HmacSha512Signature);
-            var token = new JwtSecurityToken(
-                claims: claims,
-                signingCredentials: credential,
-                expires: DateTime.Now.AddMinutes(5)
-            );
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            });
+            var key = Convert.FromBase64String(_projectOptions.SecreteKey);
+            var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
+     
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                #region CustomeClaims
+                Subject = claims,
+                #endregion
+                #region GenericClaims
+                Issuer = _projectOptions.Issuer,
+                Audience = _projectOptions.Audience,
+                Expires = DateTime.Now.AddMinutes(5),
+                SigningCredentials = signingCredentials,
+                #endregion
 
-            return jwt;
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return new GenToken
+            {
+                Token = tokenHandler.WriteToken(token),
+             Username = user.Username,
+                ValidTo = token.ValidTo.AddHours(1),
+                ValidFrom = token.ValidFrom
+
+            };
+            
         }
 
     }

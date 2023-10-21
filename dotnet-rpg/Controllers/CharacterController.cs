@@ -13,7 +13,6 @@ namespace dotnet_rpg.Controllers
     [Route("api/character/")]
     [ApiController]
     [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ServiceFailedResponse))]
-    [TypeFilter(typeof(ApiKeyAttribute))]
 
 #if DEBUG
     public class CharacterController : ControllerBase
@@ -33,7 +32,7 @@ namespace dotnet_rpg.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponse<List<GetCharacterDto>>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ServiceBadResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ServiceFailedResponse))]
-        [HttpGet("GetAll")]
+        [HttpGet("GetAll"),Authorize]
         public async Task<IActionResult> Get()
         {
             if (!ModelState.IsValid)
@@ -90,7 +89,7 @@ namespace dotnet_rpg.Controllers
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ServiceResponse<GetCharacterDto>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ServiceBadResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ServiceFailedResponse))]
-        [HttpPost]
+        [HttpPost,AllowAnonymous]
         public async Task<IActionResult>  AddCharacter([FromBody] AddCharacterDto addcharacter)
         {
 
@@ -119,7 +118,7 @@ namespace dotnet_rpg.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponse<GetCharacterDto>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ServiceBadResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ServiceFailedResponse))]
-        [HttpPut]
+        [HttpPut,AllowAnonymous]
         public async Task<IActionResult> UpdateCharacter([FromBody] UpdateCharacterDto updatecharacter)
         {
 

@@ -10,6 +10,7 @@ namespace dotnet_rpg.domain.Models
     {
         public T? Data { get; set; }
 
+        public string ResponseId { get; set; } = DateTime.Now.ToString("yyyyMMddHHmmssfffffff");
         public bool Success { get; set; } = true;
 
         public string Message { get; set; } = string.Empty;
@@ -27,11 +28,13 @@ namespace dotnet_rpg.domain.Models
 
 
         public bool Success { get; set; } = false;
+        public string ResponseId { get; set; } = DateTime.Now.ToString("yyyyMMddHHmmssfffffff");
 
         public List<string>? Message { get; set; } 
     }
     public class ServiceFailedResponse
     {
+        public string ResponseId { get; set; } = DateTime.Now.ToString("yyyyMMddHHmmssfffffff");
 
 
         public bool Success { get; set; } = false;

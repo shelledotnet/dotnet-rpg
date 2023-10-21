@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace dotnet_rpg.Extensions
@@ -16,6 +17,7 @@ namespace dotnet_rpg.Extensions
                 In = ParameterLocation.Header,
                 Scheme = "ApiKeywScheme"
             });
+           
 
             var key = new OpenApiSecurityScheme()
             {
@@ -24,7 +26,8 @@ namespace dotnet_rpg.Extensions
                     Type = ReferenceType.SecurityScheme,
                     Id = "ApiKey"
                 },
-                In = ParameterLocation.Header
+                In = ParameterLocation.Header,
+              
             };
             var requirement = new OpenApiSecurityRequirement
                 {
@@ -32,6 +35,25 @@ namespace dotnet_rpg.Extensions
                 };
 
             c.AddSecurityRequirement(requirement);
+            #endregion
+
+        }
+    }
+
+    public static class SwaggerApiKeyAuthorization
+    {
+        public static void AddSwaggerApiKeyAuthorization(this SwaggerGenOptions c)
+        {
+            #region Authorization
+            c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+            {
+                Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
+                Type = SecuritySchemeType.ApiKey,
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Scheme = "ApiKeywScheme"
+            });
+            c.OperationFilter<SecurityRequirementsOperationFilter>();
             #endregion
 
         }
