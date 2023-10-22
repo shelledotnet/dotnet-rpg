@@ -21,6 +21,8 @@ namespace dotnet_rpg.domain.Models
         [Required(AllowEmptyStrings = false)]
         public string? Issuer { get; set; }
 
+        [Required(AllowEmptyStrings = false)]
+        public TimeSpan TokenLifeTime { get; set; }
 
 
         #region MyRegion

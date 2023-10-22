@@ -19,7 +19,8 @@ namespace dotnet_rpg.Extensions
                 reqBody.bvn = "******";
 
             RequestPayload = JsonConvert.SerializeObject(reqBody);
-
+            var requestHeader = JsonConvert.SerializeObject(httpContext.Request.Headers);
+            diagnosticContext.Set("RequestHeader", requestHeader);
             diagnosticContext.Set("RequestBody", RequestPayload);
             diagnosticContext.Set("ClientIp", httpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString());
             diagnosticContext.Set("CorrelationId", httpContext.Request.Headers["x-correlation-id"].ToString());
@@ -37,7 +38,7 @@ namespace dotnet_rpg.Extensions
             }
 
 
-
+            diagnosticContext.Set("ResponseHeader", JsonConvert.SerializeObject(httpContext.Response.Headers));
             // Set all the common properties available for every request
             diagnosticContext.Set("Host", request.Host);
             diagnosticContext.Set("Protocol", request.Protocol);

@@ -32,7 +32,7 @@ namespace dotnet_rpg.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponse<List<GetCharacterDto>>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ServiceBadResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ServiceFailedResponse))]
-        [HttpGet("GetAll"),Authorize]
+        [HttpGet("GetAll"),Authorize(Roles ="Admin")]
         public async Task<IActionResult> Get()
         {
             if (!ModelState.IsValid)

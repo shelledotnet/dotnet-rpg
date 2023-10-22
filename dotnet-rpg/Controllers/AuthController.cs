@@ -50,6 +50,7 @@ namespace dotnet_rpg.Controllers
             CreatePasswordHash(userDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             user.Username= userDto.Username;
+            user.Role = userDto.Role;
             user.PasswordSalt = passwordSalt;
             user.PasswordHash = passwordHash;
 
@@ -59,7 +60,7 @@ namespace dotnet_rpg.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ServiceFailedResponse))]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponse<TokenResponse>))]
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] UserDto userDto)
+        public async Task<IActionResult> Login([FromBody] LoginDto userDto)
         {
            
             if (!ModelState.IsValid)
@@ -111,9 +112,14 @@ namespace dotnet_rpg.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
            var claims = new ClaimsIdentity(new[] 
             {
-                new Claim(ClaimTypes.Name,user.Username)
-
+                new Claim(ClaimTypes.Name,user.Username),
             });
+
+            foreach (var item in user.Role)
+            {
+                claims.AddClaim(new Claim(ClaimTypes.Role, item));
+            }
+
             var key = Convert.FromBase64String(_projectOptions.SecreteKey);
             var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature);
      
@@ -125,7 +131,8 @@ namespace dotnet_rpg.Controllers
                 #region GenericClaims
                 Issuer = _projectOptions.Issuer,
                 Audience = _projectOptions.Audience,
-                Expires = DateTime.Now.AddMinutes(5),
+                //Expires = DateTime.Now.AddMinutes(5),
+                Expires = DateTime.Now.Add(_projectOptions.TokenLifeTime),
                 SigningCredentials = signingCredentials,
                 #endregion
 
