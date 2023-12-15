@@ -1,5 +1,7 @@
 ﻿
+using Microsoft.AspNetCore.Http;
 using Serilog.Context;
+using System.Net;
 
 namespace dotnet_rpg.Middlewear
 {
@@ -25,31 +27,40 @@ namespace dotnet_rpg.Middlewear
         #region MyRegion
         public async Task Invoke(HttpContext context)
         {
-            string correlationId = null;
-            var key = context.Request.Headers.Keys.FirstOrDefault(n => n.ToLower().Equals("x-correlation-id"));
-            if (!string.IsNullOrWhiteSpace(key) && !string.IsNullOrEmpty(key))
+            try
             {
-                correlationId = context.Request.Headers[key];
-                // _logger.LogInformation("Header contained CorrelationId: {@CorrelationId}", correlationId);
+                string correlationId = null;
+                var key = context.Request.Headers.Keys.FirstOrDefault(n => n.ToLower().Equals("x-correlation-id"));
+                if (!string.IsNullOrWhiteSpace(key) && !string.IsNullOrEmpty(key))
+                {
+                    correlationId = context.Request.Headers[key];
+                    // _logger.LogInformation("Header contained CorrelationId: {@CorrelationId}", correlationId);
+                }
+                else
+                {
+                    correlationId = Guid.NewGuid().ToString();
+                    context.Request.Headers.Append("x-correlation-id", correlationId);
+                    // _logger.LogInformation("Header contained CorrelationId: {@CorrelationId}", correlationId);
+
+                }
+                context.Response.Headers.Append("x-correlation-id", correlationId);
+
+                string clientId = GetHeaderValue("client_id", context);
+                string productId = GetHeaderValue("product_id", context);
+
+                context.Response.Headers.Append("client_id", clientId);
+                context.Response.Headers.Append("product_id", productId);
+
+                using (LogContext.PushProperty("CorrelationId", correlationId))
+                {
+                    await _next.Invoke(context);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                correlationId = Guid.NewGuid().ToString();
-                context.Request.Headers.Append("x-correlation-id", correlationId);
-                // _logger.LogInformation("Header contained CorrelationId: {@CorrelationId}", correlationId);
 
-            }
-            context.Response.Headers.Append("x-correlation-id", correlationId);
-
-            string clientId = GetHeaderValue("client_id", context);
-            string productId = GetHeaderValue("product_id", context);
-
-            context.Response.Headers.Append("client_id", clientId);
-            context.Response.Headers.Append("product_id", productId);
-
-            using (LogContext.PushProperty("CorrelationId", correlationId))
-            {
-                await _next.Invoke(context);
+                string message = $"{ex}";
+                _logger.LogError(message);
             }
         }
 

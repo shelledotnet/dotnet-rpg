@@ -19,9 +19,12 @@ namespace dotnet_rpg.domain.Models
         public int Defense { get; set; }
 
         public int Intelligence { get; set; }
+        public string? State { get; set; }
 
-
+        public string? Gender { get; set; }
         public string? Class { get; set; }
+
+        public string? DOB { get; set; }
     }
 
 }

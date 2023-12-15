@@ -5,7 +5,9 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-rpg", "dotnet-rpg\dotnet-rpg.csproj", "{E14BE18B-7D19-4C8C-9CED-D6BABC5DD9DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-rpg.domain", "dotnet-rpg.domain\dotnet-rpg.domain.csproj", "{80EF5958-7AD2-4018-9337-C4E9CC782983}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dotnet-rpg.domain", "dotnet-rpg.domain\dotnet-rpg.domain.csproj", "{80EF5958-7AD2-4018-9337-C4E9CC782983}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet-rpg-nunit", "dotnet-rpg-nunit\dotnet-rpg-nunit.csproj", "{05220DBC-071B-4255-8363-18083F83FA34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{80EF5958-7AD2-4018-9337-C4E9CC782983}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80EF5958-7AD2-4018-9337-C4E9CC782983}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80EF5958-7AD2-4018-9337-C4E9CC782983}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05220DBC-071B-4255-8363-18083F83FA34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05220DBC-071B-4255-8363-18083F83FA34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05220DBC-071B-4255-8363-18083F83FA34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05220DBC-071B-4255-8363-18083F83FA34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

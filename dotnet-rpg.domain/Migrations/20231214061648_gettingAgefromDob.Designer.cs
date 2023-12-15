@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using dotnet_rpg.domain.Data;
 
@@ -11,9 +12,10 @@ using dotnet_rpg.domain.Data;
 namespace dotnet_rpg.domain.Migrations
 {
     [DbContext(typeof(EmployeeManagerDbContext))]
-    partial class EmployeeManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231214061648_gettingAgefromDob")]
+    partial class gettingAgefromDob
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,7 +86,7 @@ namespace dotnet_rpg.domain.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
@@ -132,6 +134,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 1,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 2,
                             FirstName = "Adeola",
                             Gender = "Male",
@@ -143,6 +146,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 2,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 3,
                             FirstName = "Olaolu",
                             Gender = "FeMale",
@@ -154,6 +158,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 3,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 4,
                             FirstName = "Deji",
                             Gender = "FeMale",
@@ -165,6 +170,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 4,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 1,
                             FirstName = "Sheyi",
                             Gender = "Male",
@@ -176,6 +182,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 5,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 5,
                             FirstName = "Opeola",
                             Gender = "FeMale",
@@ -187,6 +194,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 6,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 2,
                             FirstName = "Adeola",
                             Gender = "Male",
@@ -198,6 +206,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 7,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 3,
                             FirstName = "Olaolu",
                             Gender = "FeMale",
@@ -209,6 +218,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 8,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 4,
                             FirstName = "Deji",
                             Gender = "FeMale",
@@ -220,6 +230,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 9,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 1,
                             FirstName = "Sheyi",
                             Gender = "Male",
@@ -231,6 +242,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 10,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 5,
                             FirstName = "Opeola",
                             Gender = "FeMale",
@@ -242,6 +254,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 11,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 2,
                             FirstName = "Adeola",
                             Gender = "Male",
@@ -253,6 +266,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 12,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 3,
                             FirstName = "Olaolu",
                             Gender = "FeMale",
@@ -264,6 +278,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 13,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 4,
                             FirstName = "Deji",
                             Gender = "FeMale",
@@ -275,6 +290,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 14,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 1,
                             FirstName = "Sheyi",
                             Gender = "Male",
@@ -286,6 +302,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 15,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 5,
                             FirstName = "Opeola",
                             Gender = "FeMale",
@@ -297,6 +314,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 16,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 2,
                             FirstName = "Adeola",
                             Gender = "Male",
@@ -308,6 +326,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 17,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 3,
                             FirstName = "Olaolu",
                             Gender = "FeMale",
@@ -319,6 +338,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 18,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 4,
                             FirstName = "Deji",
                             Gender = "FeMale",
@@ -330,6 +350,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 19,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 1,
                             FirstName = "Sheyi",
                             Gender = "Male",
@@ -341,6 +362,7 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 20,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 5,
                             FirstName = "Opeola",
                             Gender = "FeMale",

@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using dotnet_rpg.domain.ValidationAttributes;
 
 namespace dotnet_rpg.domain.Models
 {
@@ -48,43 +49,14 @@ namespace dotnet_rpg.domain.Models
 
 
         [EnumDataType
-            (typeof(RpgClass), ErrorMessage = "character value can only be Knight , Mage or Cleric")]
+            (typeof(RpgClass), ErrorMessage = "class value can only be Knight , Mage or Cleric")]
         [DefaultValue("Knight")]
         public string? Class { get; set; }
 
-        //[Required(ErrorMessage = "{0} is required")]
+        [Required(ErrorMessage = "{0} is required")]
         [DataType(DataType.Date)]
         [ValidDobDateForUpdate]
         public string? DOB { get; set; }
     }
-    public class ValidDobDateForUpdate : ValidationAttribute
-    {
-
-        protected override ValidationResult
-                IsValid(object value, ValidationContext validationContext)
-        {
-
-            if(value == null)
-                return ValidationResult.Success;
-
-
-            if (!DateTime.TryParse(value?.ToString(), out DateTime result))
-                return new ValidationResult
-                   ("invalid value for DOB");
-
-
-            DateTime _dateJoin = Convert.ToDateTime(result);
-
-            if (_dateJoin.Date > DateTime.Now.Date)
-            {
-                return new ValidationResult
-                     ("DOB  can't be greater than  current date.");
-            }
-            else
-            {
-                return ValidationResult.Success;
-
-            }
-        }
-    }
+    
 }

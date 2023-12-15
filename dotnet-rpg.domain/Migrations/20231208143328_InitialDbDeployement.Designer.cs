@@ -12,8 +12,8 @@ using dotnet_rpg.domain.Data;
 namespace dotnet_rpg.domain.Migrations
 {
     [DbContext(typeof(EmployeeManagerDbContext))]
-    [Migration("20231018082120_initialDb")]
-    partial class initialDb
+    [Migration("20231208143328_InitialDbDeployement")]
+    partial class InitialDbDeployement
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -99,6 +99,9 @@ namespace dotnet_rpg.domain.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeveloper")
                         .HasColumnType("bit");
 
@@ -106,6 +109,9 @@ namespace dotnet_rpg.domain.Migrations
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("Timestamp")
                         .IsConcurrencyToken()

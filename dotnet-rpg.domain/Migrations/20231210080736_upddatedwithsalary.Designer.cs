@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using dotnet_rpg.domain.Data;
 
@@ -11,9 +12,10 @@ using dotnet_rpg.domain.Data;
 namespace dotnet_rpg.domain.Migrations
 {
     [DbContext(typeof(EmployeeManagerDbContext))]
-    partial class EmployeeManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231210080736_upddatedwithsalary")]
+    partial class upddatedwithsalary
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,7 +86,10 @@ namespace dotnet_rpg.domain.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("CreatedDate")
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
@@ -92,7 +97,7 @@ namespace dotnet_rpg.domain.Migrations
                         .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Dob")
+                    b.Property<DateTime>("Dob")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
@@ -132,7 +137,10 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 1,
+                            Age = 34,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 2,
+                            Dob = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Adeola",
                             Gender = "Male",
                             IsDeveloper = false,
@@ -143,7 +151,10 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 2,
+                            Age = 56,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 3,
+                            Dob = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Olaolu",
                             Gender = "FeMale",
                             IsDeveloper = true,
@@ -154,7 +165,10 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 3,
+                            Age = 34,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 4,
+                            Dob = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Deji",
                             Gender = "FeMale",
                             IsDeveloper = false,
@@ -165,7 +179,10 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 4,
+                            Age = 78,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 1,
+                            Dob = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Sheyi",
                             Gender = "Male",
                             IsDeveloper = true,
@@ -176,177 +193,15 @@ namespace dotnet_rpg.domain.Migrations
                         new
                         {
                             Id = 5,
+                            Age = 23,
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DepartmentId = 5,
+                            Dob = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             FirstName = "Opeola",
                             Gender = "FeMale",
                             IsDeveloper = false,
                             LastName = "Bayo",
-                            Salary = 8600.0,
-                            State = "Oyo"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            DepartmentId = 2,
-                            FirstName = "Adeola",
-                            Gender = "Male",
-                            IsDeveloper = false,
-                            LastName = "Malian",
-                            Salary = 61000.0,
-                            State = "Ogun"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            DepartmentId = 3,
-                            FirstName = "Olaolu",
-                            Gender = "FeMale",
-                            IsDeveloper = true,
-                            LastName = "Mapayi",
-                            Salary = 3400.0,
-                            State = "Lagos"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            DepartmentId = 4,
-                            FirstName = "Deji",
-                            Gender = "FeMale",
-                            IsDeveloper = false,
-                            LastName = "Henry",
-                            Salary = 9900.0,
-                            State = "Oyo"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            DepartmentId = 1,
-                            FirstName = "Sheyi",
-                            Gender = "Male",
-                            IsDeveloper = true,
-                            LastName = "Alao",
-                            Salary = 7890.0,
-                            State = "Lagos"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            DepartmentId = 5,
-                            FirstName = "Opeola",
-                            Gender = "FeMale",
-                            IsDeveloper = false,
-                            LastName = "Bayo",
-                            Salary = 9600.0,
-                            State = "Oyo"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            DepartmentId = 2,
-                            FirstName = "Adeola",
-                            Gender = "Male",
-                            IsDeveloper = false,
-                            LastName = "Malian",
-                            Salary = 61000.0,
-                            State = "Ogun"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            DepartmentId = 3,
-                            FirstName = "Olaolu",
-                            Gender = "FeMale",
-                            IsDeveloper = true,
-                            LastName = "Mapayi",
-                            Salary = 3400.0,
-                            State = "Lagos"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            DepartmentId = 4,
-                            FirstName = "Deji",
-                            Gender = "FeMale",
-                            IsDeveloper = false,
-                            LastName = "Henry",
-                            Salary = 8900.0,
-                            State = "Oyo"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            DepartmentId = 1,
-                            FirstName = "Sheyi",
-                            Gender = "Male",
-                            IsDeveloper = true,
-                            LastName = "Alao",
-                            Salary = 7890.0,
-                            State = "Lagos"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            DepartmentId = 5,
-                            FirstName = "Opeola",
-                            Gender = "FeMale",
-                            IsDeveloper = false,
-                            LastName = "Bayo",
-                            Salary = 8600.0,
-                            State = "Oyo"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            DepartmentId = 2,
-                            FirstName = "Adeola",
-                            Gender = "Male",
-                            IsDeveloper = false,
-                            LastName = "Malian",
-                            Salary = 61000.0,
-                            State = "Ogun"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            DepartmentId = 3,
-                            FirstName = "Olaolu",
-                            Gender = "FeMale",
-                            IsDeveloper = true,
-                            LastName = "Mapayi",
-                            Salary = 3400.0,
-                            State = "Lagos"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            DepartmentId = 4,
-                            FirstName = "Deji",
-                            Gender = "FeMale",
-                            IsDeveloper = false,
-                            LastName = "Henry",
-                            Salary = 9900.0,
-                            State = "Oyo"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            DepartmentId = 1,
-                            FirstName = "Sheyi",
-                            Gender = "Male",
-                            IsDeveloper = true,
-                            LastName = "Alao",
-                            Salary = 7890.0,
-                            State = "Lagos"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            DepartmentId = 5,
-                            FirstName = "Opeola",
-                            Gender = "FeMale",
-                            IsDeveloper = false,
-                            LastName = "Bayo",
-                            Salary = 9600.0,
+                            Salary = 5600.0,
                             State = "Oyo"
                         });
                 });

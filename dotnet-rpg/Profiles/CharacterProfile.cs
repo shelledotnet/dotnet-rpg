@@ -13,11 +13,31 @@ namespace dotnet_rpg.Profiles
             CreateMap<Character, GetCharacterDto>();
             CreateMap<AddCharacterDto, Character>();
             CreateMap<ServiceResponse<List<GetCharacterDto>>, ServiceFailedResponse>();
+            CreateMap<ServiceResponse<PagedList<Employee>>, ServiceFailedResponse>();
             CreateMap<ServiceResponse<GetCharacterDto>, ServiceFailedResponse>();
+            CreateMap<Employee, EmployeeResponseDto>()
+                 .ForMember(
+                            dest => dest.Name,
+                            opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
+                 .ForMember(
+                            dest => dest.Age,
+                            opt => opt.MapFrom(src => CalculateAge(src.Dob)));
+            CreateMap<Department, DepartmentDto>();
+
             CreateMap<int?, int>().ConvertUsing((src, dest) => src ?? dest);
             CreateMap<UpdateCharacterDto, Character>()
                      .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
-          
+           //Provide Mapping Dept from Department Property
+           //     .ForMember(dest => dest.Dept, act => act.MapFrom(src => src.Department));
+        }
+        public  int CalculateAge(DateTime? dateOfBirth)
+        {
+            int age = 0;
+            age = DateTime.Now.Year - dateOfBirth.Value.Year;
+            if (DateTime.Now.DayOfYear < dateOfBirth.Value.DayOfYear)
+                age = age - 1;
+
+            return age;
         }
     }
 }

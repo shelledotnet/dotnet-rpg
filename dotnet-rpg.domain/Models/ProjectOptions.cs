@@ -24,7 +24,17 @@ namespace dotnet_rpg.domain.Models
         [Required(AllowEmptyStrings = false)]
         public TimeSpan TokenLifeTime { get; set; }
 
+        [Required(AllowEmptyStrings = false)]
+        public string? SearchQuery { get; set; }
 
+        [Required(AllowEmptyStrings = false)]
+        public string? Ok { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        public string? FilterQquery { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        public string? NotFound { get; set; }
         #region MyRegion
         //[Required(AllowEmptyStrings = false)]
         //public string? Version { get; set; }

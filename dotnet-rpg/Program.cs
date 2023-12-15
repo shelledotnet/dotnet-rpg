@@ -13,6 +13,7 @@ using Serilog;
 using Swashbuckle.AspNetCore.Filters;
 using System.Net;
 using System.Text;
+using System.Text.Json.Serialization;
 
 
 #region configurationBuilder
@@ -42,12 +43,19 @@ try
 
     // Add services to the container.
 
-    builder.Services.AddControllers()//for custom response on the model
+    builder.Services.AddControllers(configure =>
+    {
+        configure.ReturnHttpNotAcceptable = true;
+    }).AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
+    .AddXmlDataContractSerializerFormatters()//for xml output
         .ConfigureApiBehaviorOptions(options =>
         {
 
             options.SuppressModelStateInvalidFilter = true;
-        });
+        });//for custom manipulate of message
+
+
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(c =>
@@ -55,6 +63,7 @@ try
         c.AddSwaggerApiKeySecurity();
         c.AddSwaggerApiKeyAuthorization();
     });
+
     var projectOptions = builder.Configuration.GetSection(nameof(ProjectOptions)).Get<ProjectOptions>();
     var tokenvalidationParameter = new TokenValidationParameters
     {
@@ -98,7 +107,7 @@ try
     });
     builder.Services.AddDbContextFactory<EmployeeManagerDbContext>(
     opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("IMSConnection")));
-
+    builder.Services.AddTransient<IPropertyMappingService,PropertyMappingService>();
 
 
 
@@ -107,15 +116,15 @@ try
     var app = builder.Build();
 
 #if DEBUG
-    #region This will create the Db and run all pending migrations if not exist
+    #region This will create the Db and run all pending migrations if not exist when application start***this should be discourage at production
     await EnsureDatabaseIsMigrated(app.Services);
     async Task EnsureDatabaseIsMigrated(IServiceProvider services)
     {
-        using var scope = services.CreateScope();
-        using var ctx = scope.ServiceProvider.GetService<EmployeeManagerDbContext>();
+        using var scope = services.CreateScope();//the scope help us to get the EmployeeManagerDbContext that we have injected
+        using var ctx = scope.ServiceProvider.GetService<EmployeeManagerDbContext>(); 
         if (ctx is not null)
         {
-            await ctx.Database.MigrateAsync();
+            await ctx.Database.MigrateAsync();//this method MigrateAsync(); will help create DB if not exist and likewise run all pending migration
         }
     }
     #endregion
@@ -128,6 +137,18 @@ try
     {
         app.UseSwagger();
         app.UseSwaggerUI();
+        app.UseDeveloperExceptionPage();
+    }
+    else
+    {
+        app.UseExceptionHandler(appBuilder =>
+        {
+            appBuilder.Run(async context =>
+            {
+                context.Response.StatusCode = 500;
+                await context.Response.WriteAsync("An Unexpected fault happened. Try again later.");
+            });
+        });
     }
     app.UseCorrelationId();
     app.UseHttpsRedirection();

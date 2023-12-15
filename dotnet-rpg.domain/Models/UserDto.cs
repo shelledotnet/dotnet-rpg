@@ -15,8 +15,8 @@ namespace dotnet_rpg.domain.Models
         [DefaultValue("ola@21")]
         public string? Password { get; set; }
 
-      //  [DefaultValue("User")]
-        public List<string> Role { get; set; }
+        //[DefaultValue("User")]
+        public List<string>? Role { get; set; }
     }
 
     

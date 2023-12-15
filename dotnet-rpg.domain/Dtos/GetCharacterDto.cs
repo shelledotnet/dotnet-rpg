@@ -16,6 +16,10 @@ namespace dotnet_rpg.domain.Dtos
 
         public int Intelligence { get; set; }
 
+        public string? State { get; set; }
+
+        public string? Gender { get; set; }
+
        
         public RpgClass Class { get; set; }
     }

@@ -51,7 +51,8 @@ namespace dotnet_rpg.Extensions
                 Type = SecuritySchemeType.ApiKey,
                 Name = "Authorization",
                 In = ParameterLocation.Header,
-                Scheme = "ApiKeywScheme"
+                BearerFormat = "JWT",
+                Scheme = "Bearer"
             });
             c.OperationFilter<SecurityRequirementsOperationFilter>();
             #endregion

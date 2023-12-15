@@ -25,4 +25,12 @@ namespace dotnet_rpg.domain.Models
         public DateTime CreatedDate { get; set; }
     }
 
+    public class DepartmentDto
+    {
+        
+        public string? Name { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+    }
+
 }

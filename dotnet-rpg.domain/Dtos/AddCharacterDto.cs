@@ -1,11 +1,13 @@
 ﻿using dotnet_rpg.domain.Models;
+using dotnet_rpg.domain.ValidationAttributes;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace dotnet_rpg.domain.Dtos
 {
-  
-    public class AddCharacterDto
+
+    [StrengthValueMustBeDifferentFromDefense]
+    public class AddCharacterDto //: IValidatableObject
     {
         //public int Id { get; set; }
 
@@ -30,7 +32,7 @@ namespace dotnet_rpg.domain.Dtos
         [Required(ErrorMessage = "{0} is required")]
         [RegularExpression(@"^[0-9]+$", ErrorMessage = "invalid {0} ")]
         [Range(1, 300, ErrorMessage = "invalid value for {0}")]
-        [DefaultValue(10)]
+        [DefaultValue(9)]
         public int Defense { get; set; }
 
         [Required(ErrorMessage = "{0} is required")]
@@ -41,17 +43,44 @@ namespace dotnet_rpg.domain.Dtos
 
 
         [EnumDataType
-            (typeof(RpgClass), ErrorMessage = "character value can only be Knight , Mage or Cleric")]
+            (typeof(RpgClass), ErrorMessage = "class value can only be Knight , Mage or Cleric")]
         [DefaultValue("Knight")]
-        public string Class { get; set; }
+        public string? Class { get; set; }
 
         [Required(ErrorMessage ="{0} is required")]
         [DataType(DataType.Date)]
         [ValidDobDateForUpdate]
-        public string DOB { get; set; }
+        public string? DOB { get; set; }
+
+        //cross property validation rules
+        //public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        //{
+        //    if(Strength == Defense)
+        //    {
+        //        yield return new ValidationResult("the provided strength value should be diffeerent from Defense");
+        //    }
+
+        //    #region [ValidDobDateForUpdate]
+        //    //if (!DateTime.TryParse(DOB.ToString(), out DateTime result))
+        //    //    yield return new ValidationResult
+        //    //       ("invalid value for DOB");
 
 
+        //    //DateTime _dateJoin = Convert.ToDateTime(result);
 
+        //    //if (_dateJoin.Date > DateTime.Now.Date)
+        //    //{
+        //    //    yield return new ValidationResult
+        //    //         ("DOB  can't be greater than  current date.");
+        //    //}
+        //    //else
+        //    //{
+        //    //    yield return ValidationResult.Success;
+
+        //    //} 
+        //    #endregion
+
+        //}
     }
 
 

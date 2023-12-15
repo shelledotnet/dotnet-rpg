@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using dotnet_rpg.domain.Data;
 
@@ -11,9 +12,10 @@ using dotnet_rpg.domain.Data;
 namespace dotnet_rpg.domain.Migrations
 {
     [DbContext(typeof(EmployeeManagerDbContext))]
-    partial class EmployeeManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231214083329_updatedthetype")]
+    partial class updatedthetype
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
