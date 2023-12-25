@@ -39,7 +39,7 @@ namespace dotnet_rpg.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ServiceResponse<List<GetCharacterDto>>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ServiceBadResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ServiceFailedResponse))]
-        [HttpGet("GetAll"),Authorize(Roles ="Admin,user")]
+        [HttpGet("GetAll"),Authorize(Roles ="admin,user")]
         public async Task<IActionResult> Get()
         {
             if (!ModelState.IsValid)
@@ -199,12 +199,6 @@ namespace dotnet_rpg.Controllers
                 return StatusCode(500, serviceResponse);
             }
         }
-
-
-
-
-
-
 
 
 

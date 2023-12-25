@@ -35,6 +35,40 @@ namespace dotnet_rpg.domain.Models
 
         [Required(AllowEmptyStrings = false)]
         public string? NotFound { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        public string? Conflict { get; set; }
+
+       
+        [Required(AllowEmptyStrings = false)]
+        public string? InValidToken { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        public string? ValidToken { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        public string? FalseToken { get; set; }
+
+       
+        [Required(AllowEmptyStrings = false)]
+        public string? TokenExpired { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        public string? TokenRevoked { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        public string? TokenUsed { get; set; }
+
+
+        [Required(AllowEmptyStrings = false)]
+        public string? TokenNotMatched { get; set; }
+
+
+
+
+
+
+
         #region MyRegion
         //[Required(AllowEmptyStrings = false)]
         //public string? Version { get; set; }

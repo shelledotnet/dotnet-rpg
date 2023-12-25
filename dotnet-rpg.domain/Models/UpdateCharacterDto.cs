@@ -53,7 +53,7 @@ namespace dotnet_rpg.domain.Models
         [DefaultValue("Knight")]
         public string? Class { get; set; }
 
-        [Required(ErrorMessage = "{0} is required")]
+        //[Required(ErrorMessage = "{0} is required")]
         [DataType(DataType.Date)]
         [ValidDobDateForUpdate]
         public string? DOB { get; set; }

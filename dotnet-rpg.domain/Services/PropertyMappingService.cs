@@ -7,8 +7,12 @@ using System.Threading.Tasks;
 
 namespace dotnet_rpg.domain.Services
 {
+   
+
     public class PropertyMappingService : IPropertyMappingService
     {
+        //ensure to register this service 
+        //    builder.Services.AddTransient<IPropertyMappingService,PropertyMappingService>();
         private readonly Dictionary<string, PropertyMappingValue> _authorPropertyMapping =
         new(StringComparer.OrdinalIgnoreCase)
         {

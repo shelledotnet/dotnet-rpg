@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>dotnet_rpg</RootNamespace>
+    <UserSecretsId>c1d2563a-74d4-4d85-a9fe-13820fd35c88</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

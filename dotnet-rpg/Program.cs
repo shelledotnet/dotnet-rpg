@@ -79,6 +79,7 @@ try
     };
     builder.Services.AddSingleton(tokenvalidationParameter);//i register this in ioc-container to be able to re-use this anywhere
 
+    //registeering authentiction service to use JwtBearerDefaults
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -86,6 +87,7 @@ try
 
 
             });
+
     builder.Services.AddAutoMapper(typeof(Program).Assembly);
     builder.Services.AddScoped<ICharacterService, CharacterServices>();
     builder.Services.AddOptions<ProjectOptions>()
@@ -107,8 +109,9 @@ try
     });
     builder.Services.AddDbContextFactory<EmployeeManagerDbContext>(
     opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("IMSConnection")));
-    builder.Services.AddTransient<IPropertyMappingService,PropertyMappingService>();
 
+    builder.Services.AddTransient<IPropertyMappingService,PropertyMappingService>();
+    builder.Services.AddTransient<IUserRepository, UserRepository>();
 
 
 

@@ -16,12 +16,16 @@ namespace dotnet_rpg.domain.Data
             : base(options) { }
 
         public DbSet<Employee> Employees => Set<Employee>();
-
+        public DbSet<Users> Users => Set<Users>();
         public DbSet<Department> Departments => Set<Department>();
+
+        public DbSet<Order> Orders => Set<Order>();
+        public DbSet<Role> Role => Set<Role>();
+        public DbSet<RefereshTokenModels> RefereshTokens => Set<RefereshTokenModels>();
 
 
 #if DEBUG
-     #region Seed Data
+        #region Seed Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

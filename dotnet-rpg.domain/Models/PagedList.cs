@@ -23,13 +23,14 @@ namespace dotnet_rpg.domain.Models
 
         public int TotalPages { get;private set; }
 
-        public int PageSize { get; private set; }
+        public int PageSize { get; private set; }//not to allow changes outside this application
         public int TotalCount { get;private set; }
         public bool HasPrevious => (CurrentPage > 1);
         public bool HasNext => (CurrentPage < TotalPages);
 
 
-        //this mehod will create pagedlist for us
+        //this mehod will create pagedlist for us pagging is the lst thing you want to do on Iquerable before
+        //executing the query by appeniding ToListAsync
         public static async Task<PagedList<T>> CreateAsync(
             IQueryable<T> source,int pageNUmber,int pageSize)
         {

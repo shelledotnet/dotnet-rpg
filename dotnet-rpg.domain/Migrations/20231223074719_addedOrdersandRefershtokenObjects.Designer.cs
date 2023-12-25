@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using dotnet_rpg.domain.Data;
 
@@ -11,9 +12,10 @@ using dotnet_rpg.domain.Data;
 namespace dotnet_rpg.domain.Migrations
 {
     [DbContext(typeof(EmployeeManagerDbContext))]
-    partial class EmployeeManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231223074719_addedOrdersandRefershtokenObjects")]
+    partial class addedOrdersandRefershtokenObjects
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -421,31 +423,6 @@ namespace dotnet_rpg.domain.Migrations
                     b.ToTable("RefereshTokens");
                 });
 
-            modelBuilder.Entity("dotnet_rpg.domain.Models.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UsersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("Role");
-                });
-
             modelBuilder.Entity("dotnet_rpg.domain.Models.Users", b =>
                 {
                     b.Property<int>("Id")
@@ -522,17 +499,6 @@ namespace dotnet_rpg.domain.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("dotnet_rpg.domain.Models.Role", b =>
-                {
-                    b.HasOne("dotnet_rpg.domain.Models.Users", "Users")
-                        .WithMany("Roles")
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Users");
-                });
-
             modelBuilder.Entity("dotnet_rpg.domain.Models.Department", b =>
                 {
                     b.Navigation("Employees");
@@ -541,8 +507,6 @@ namespace dotnet_rpg.domain.Migrations
             modelBuilder.Entity("dotnet_rpg.domain.Models.Users", b =>
                 {
                     b.Navigation("Orders");
-
-                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

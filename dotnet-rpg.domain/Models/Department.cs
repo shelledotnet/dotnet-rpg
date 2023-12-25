@@ -10,6 +10,7 @@ namespace dotnet_rpg.domain.Models
 {
     public class Department
     {
+        [Key]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "{0} required")]

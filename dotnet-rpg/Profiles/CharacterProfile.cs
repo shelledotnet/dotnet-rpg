@@ -12,9 +12,16 @@ namespace dotnet_rpg.Profiles
             #endregion  YouVerifyV2CacModel
             CreateMap<Character, GetCharacterDto>();
             CreateMap<AddCharacterDto, Character>();
+            CreateMap<Users, UsersDto>().ReverseMap();
+            CreateMap<Users, LoginResponseDto>();
+            CreateMap<RegisterRequestDto, Users>()
+                .ForMember(dest => dest.Password, act => act.Ignore());
             CreateMap<ServiceResponse<List<GetCharacterDto>>, ServiceFailedResponse>();
             CreateMap<ServiceResponse<PagedList<Employee>>, ServiceFailedResponse>();
             CreateMap<ServiceResponse<GetCharacterDto>, ServiceFailedResponse>();
+            CreateMap<ServiceResponse<LoginResponseDto>, ServiceFailedResponse>();
+            CreateMap<ServiceResponse<GenTokens>, ServiceFailedResponse>();
+            CreateMap<LoginRequestDto, UsersDto>();
             CreateMap<Employee, EmployeeResponseDto>()
                  .ForMember(
                             dest => dest.Name,
@@ -35,7 +42,7 @@ namespace dotnet_rpg.Profiles
             int age = 0;
             age = DateTime.Now.Year - dateOfBirth.Value.Year;
             if (DateTime.Now.DayOfYear < dateOfBirth.Value.DayOfYear)
-                age = age - 1;
+                age--;
 
             return age;
         }

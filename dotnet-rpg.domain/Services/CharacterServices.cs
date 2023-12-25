@@ -282,7 +282,7 @@ namespace dotnet_rpg.domain.Services
                 var collections = context.Employees as IQueryable<Employee>;
 
 
-
+                //filtering is on a particular fields
                 if (!string.IsNullOrEmpty(model.mainCategory) && collections.Any())
                 {
 
@@ -292,15 +292,16 @@ namespace dotnet_rpg.domain.Services
 
                 }
 
+                //searching is on all fields
                 if (!string.IsNullOrEmpty(model.searchQuery) && collections.Any())
                 {
 
                     model.searchQuery = model.searchQuery.Trim().ToLower();
 
                     collections = collections?.Where(a => a.State.ToLower().Contains(model.searchQuery)
-                                                                     || a.FirstName.Contains(model.searchQuery)
-                                                                     || a.LastName.Contains(model.searchQuery)
-                                                                     || a.Gender.Contains(model.searchQuery)
+                                                                     || a.FirstName.ToLower().Contains(model.searchQuery)
+                                                                     || a.LastName.ToLower().Contains(model.searchQuery)
+                                                                     || a.Gender.ToLower().Contains(model.searchQuery)
                                                                      )
                                             .Include(a => a.Department);
                 }
@@ -319,7 +320,7 @@ namespace dotnet_rpg.domain.Services
                 if (collections.Any())
                 {
 
-
+                    //this ensure pagination is done at DB level thanks to IQuerable collection objects
                     return await PagedList<Employee>.CreateAsync(collections.Include(a => a.Department),
                                                                            model.pageNumber, model.pageSize);
 
